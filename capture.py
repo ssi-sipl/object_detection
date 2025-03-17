@@ -1,6 +1,6 @@
 from picamera2 import Picamera2
 import cv2
-import tensorflow.lite as tflite
+import tflite_runtime.interpreter as tflite
 
 interpreter = tflite.Interpreter(model_path="detect.tflite")
 interpreter.allocate_tensors()
