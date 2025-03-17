@@ -1,8 +1,9 @@
 from picamera2 import Picamera2
 import cv2
 import tflite_runtime.interpreter as tflite
+import numpy as np
 
-interpreter = tflite.Interpreter(model_path="detect.tflite")
+interpreter = tflite.Interpreter(model_path="tflite_model/detect.tflite")
 interpreter.allocate_tensors()
 
 # Get input and output details
