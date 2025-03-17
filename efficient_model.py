@@ -19,8 +19,8 @@ with open("tflite_model/labelmap1.txt", "r") as f:
 
 def preprocess_frame(frame):
     
-    img = cv2.resize(frame, (512, 512))  # Resize for model
-    img = np.expand_dims(img, axis=0)  # Add batch dimension (1, H, W, 3)
+    img = cv2.resize(frame, (1, 1))  # Resize to (1, 1)
+    img = np.expand_dims(img, axis=0)  # Add batch dimension
     img = img.astype(np.uint8)  # Convert to uint8
     return img
 
