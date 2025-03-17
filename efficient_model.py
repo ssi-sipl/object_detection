@@ -58,7 +58,7 @@ while True:
     frame = picam2.capture_array()
     frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)  # Convert to BGR
 
-    boxes, class_ids, scores, num_detections = run_inference(frame)
+    boxes, class_ids, scores = run_inference(frame)
     frame = draw_boxes(frame, boxes, class_ids, scores)
     
     # Display the frame
