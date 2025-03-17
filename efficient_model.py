@@ -40,7 +40,7 @@ while True:
     boxes = np.squeeze(interpreter.get_tensor(output_details[0]['index']))  # (N, 4)
     class_ids = np.squeeze(interpreter.get_tensor(output_details[1]['index']))  # (N,)
     scores = np.squeeze(interpreter.get_tensor(output_details[2]['index']))  # (N,)
-    num_detections = int(interpreter.get_tensor(output_details[3]['index'])[0])  # Integer
+    num_detections = interpreter.get_tensor(output_details[3]['index'])[0]  # Integer
 
     # Iterate over detections
     for i in range(num_detections):
