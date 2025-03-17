@@ -15,6 +15,8 @@ input_shape = input_details[0]['shape']
 with open("tflite_model/labelmap.txt", "r") as f:
     labels = [line.strip() for line in f.readlines()]
 
+print(f"Total labels: {len(labels)}")
+
 # Initialize camera
 picam2 = Picamera2()
 picam2.configure(picam2.create_preview_configuration())
@@ -48,8 +50,8 @@ while True:
             label = f"{labels[int(class_ids[i])]}: {int(scores[i] * 100)}%"
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
             cv2.putText(frame, label, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            print("Class Id: ", class_ids, "Label: ", labels[int(class_ids[i])])
 
-    
     cv2.imshow("Camera Feed", frame)  # Display
     
     if cv2.waitKey(1) & 0xFF == ord('q'):  # Press 'q' to quit
