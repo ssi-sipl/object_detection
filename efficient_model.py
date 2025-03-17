@@ -35,9 +35,15 @@ while True:
     interpreter.invoke()
 
     # Get detection results
-    boxes = interpreter.get_tensor(output_details[0]['index'])[0]  # Bounding boxes
-    class_ids = interpreter.get_tensor(output_details[1]['index'])[0]  # Class labels
-    scores = interpreter.get_tensor(output_details[2]['index'])[0]  # Confidence scores
+    boxes = np.squeeze(interpreter.get_tensor(output_details[0]['index']))  # (num_detections, 4)
+    class_ids = np.squeeze(interpreter.get_tensor(output_details[1]['index']))  # (num_detections,)
+    scores = np.squeeze(interpreter.get_tensor(output_details[2]['index']))  # (num_detections,)
+
+    # Ensure scores is an iterable list
+    if scores.ndim == 0:  # If scores is a single value instead of an array
+        scores = [scores]
+        class_ids = [class_ids]
+        boxes = [boxes]
 
     # Draw bounding boxes
     h, w, _ = frame.shape
