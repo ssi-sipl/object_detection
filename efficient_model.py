@@ -31,6 +31,10 @@ def run_inference(image):
     boxes = np.squeeze(interpreter.get_tensor(output_details[0]['index']))
     class_ids = np.squeeze(interpreter.get_tensor(output_details[1]['index']))
     scores = np.squeeze(interpreter.get_tensor(output_details[2]['index']))
+
+    print("boxes: ", boxes)
+    print("class_ids: ", class_ids)
+    print("scores: ". scores)
     # num_detections = int(interpreter.get_tensor(output_details[3]['index'])[0])
 
     return boxes, class_ids, scores
