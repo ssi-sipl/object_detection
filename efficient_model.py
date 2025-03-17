@@ -11,6 +11,8 @@ interpreter.allocate_tensors()
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
+print("Input Details: ", input_details)
+
 # Load labels file
 with open("tflite_model/labelmap1.txt", "r") as f:
     labels = [line.strip() for line in f.readlines()]
@@ -21,6 +23,7 @@ def preprocess_image(image, input_shape):
     return img_array
 
 def run_inference(image):
+
     input_tensor = preprocess_image(image, input_details[0]['shape'])
 
     # Set input tensor
