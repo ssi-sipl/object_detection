@@ -17,43 +17,48 @@ print("Output Detaisl: ", output_details)
 with open("tflite_model/labelmap1.txt", "r") as f:
     labels = [line.strip() for line in f.readlines()]
 
-def preprocess_image(image, input_shape):
-    img_resized = cv2.resize(image, (input_shape[1], input_shape[2]))  # Resize
-    img_array = np.expand_dims(img_resized, axis=0).astype(np.uint8)   # Expand dims
-    return img_array
+def preprocess_frame(frame):
+    
+    img = cv2.resize(frame, (512, 512))  # Resize for model
+    img = np.expand_dims(img, axis=0)  # Add batch dimension (1, H, W, 3)
+    img = img.astype(np.uint8)  # Convert to uint8
+    return img
 
-def run_inference(image):
+def run_inference(frame):
+    """ Run inference on a single frame """
+    img = preprocess_frame(frame)
 
-    input_tensor = preprocess_image(image, input_details[0]['shape'])
-
-    # Set input tensor
-    interpreter.set_tensor(input_details[0]['index'], input_tensor)
+    interpreter.set_tensor(input_details[0]['index'], img)
     interpreter.invoke()
 
-    # Extract output tensors
-    boxes = np.squeeze(interpreter.get_tensor(output_details[0]['index']))
-    class_ids = np.squeeze(interpreter.get_tensor(output_details[1]['index']))
-    scores = np.squeeze(interpreter.get_tensor(output_details[2]['index']))
+    # Get output tensors
+    boxes = interpreter.get_tensor(output_details[0]['index'])  # Bounding boxes
+    class_probs = interpreter.get_tensor(output_details[3]['index'])  # Class probabilities
+    num_detections = interpreter.get_tensor(output_details[2]['index'])  # Number of detections
 
-    print("boxes: ", len(boxes))
-    print("class_ids: ", len(class_ids))
-    print("scores: ", scores)
-    # num_detections = int(interpreter.get_tensor(output_details[3]['index'])[0])
+    return np.squeeze(boxes), np.squeeze(class_probs), int(num_detections[0])
 
-    return boxes, class_ids, scores
+def draw_boxes(frame, boxes, class_probs, num_detections, threshold=0.5):
+    """ Draw bounding boxes on frame """
+    h, w, _ = frame.shape
 
-def draw_boxes(image, boxes, class_ids, scores, threshold=0.5):
-    h, w, _ = image.shape
+    for i in range(num_detections):
+        class_id = np.argmax(class_probs[i])  # Get highest probability class
+        confidence = class_probs[i][class_id]  # Confidence score
 
-    for i in range(len(scores)):
-        if scores[i] > threshold:
+        if confidence > threshold:
             ymin, xmin, ymax, xmax = boxes[i]
-            xmin, xmax, ymin, ymax = int(xmin * w), int(xmax * w), int(ymin * h), int(ymax * h)
-            label = f"{labels[int(class_ids[i])]}: {int(scores[i] * 100)}%"
-            cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
-            cv2.putText(image, label, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            
+            # Convert normalized coordinates to pixel values
+            xmin, xmax = int(xmin * w), int(xmax * w)
+            ymin, ymax = int(ymin * h), int(ymax * h)
 
-    return image
+            # Draw bounding box
+            cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
+            label = f"Class {class_id}: {confidence:.2f}"
+            cv2.putText(frame, label, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+    return frame
 
 # Initialize Picamera2
 picam2 = Picamera2()
@@ -65,8 +70,9 @@ while True:
     frame = picam2.capture_array()
     frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)  # Convert to BGR
 
-    boxes, class_ids, scores = run_inference(frame)
-    frame = draw_boxes(frame, boxes, class_ids, scores)
+    boxes, class_probs, num_detections = run_inference(frame)
+    frame = draw_boxes(frame, boxes, class_probs, num_detections)
+
     
     # Display the frame
     cv2.imshow("EfficientDet Object Detection", frame)
