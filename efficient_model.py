@@ -34,27 +34,20 @@ while True:
     interpreter.set_tensor(input_details[0]['index'], img_array)
     interpreter.invoke()
 
-    # Get detection results
-    boxes = np.squeeze(interpreter.get_tensor(output_details[0]['index']))  # (num_detections, 4)
-    class_ids = np.squeeze(interpreter.get_tensor(output_details[1]['index']))  # (num_detections,)
-    scores = np.squeeze(interpreter.get_tensor(output_details[2]['index']))  # (num_detections,)
+    output_details = interpreter.get_output_details()
 
-    # Ensure scores is an iterable list
-    if scores.ndim == 0:  # If scores is a single value instead of an array
-        scores = [scores]
-        class_ids = [class_ids]
-        boxes = [boxes]
+    # Extract output data
+    boxes = np.squeeze(interpreter.get_tensor(output_details[0]['index']))  # (N, 4)
+    class_ids = np.squeeze(interpreter.get_tensor(output_details[1]['index']))  # (N,)
+    scores = np.squeeze(interpreter.get_tensor(output_details[2]['index']))  # (N,)
+    num_detections = int(interpreter.get_tensor(output_details[3]['index'])[0])  # Integer
 
-    # Draw bounding boxes
-    h, w, _ = frame.shape
-    for i in range(len(scores)):
+    # Iterate over detections
+    for i in range(num_detections):
         if scores[i] > 0.5:  # Confidence threshold
             ymin, xmin, ymax, xmax = boxes[i]
-            xmin, xmax, ymin, ymax = int(xmin * w), int(xmax * w), int(ymin * h), int(ymax * h)
-            label = f"{labels[int(class_ids[i])]}: {int(scores[i] * 100)}%"
-            cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
-            cv2.putText(frame, label, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-
+            class_id = int(class_ids[i])
+            confidence = scores[i]
     # Display the frame
     cv2.imshow("EfficientDet Object Detection", frame)
 
