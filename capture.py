@@ -56,6 +56,7 @@ while True:
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
             cv2.putText(frame, label, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             class_id = class_ids[i]
+            print(class_id)
             label = labels[class_id]
             # print("class id: ",type(class_ids), "len: ", len(class_ids))
             print("Class Id: ", class_id, "Label: ", label)
