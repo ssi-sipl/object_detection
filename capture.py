@@ -49,7 +49,7 @@ while True:
     # Draw bounding boxes
     h, w, _ = frame.shape
     for i in range(len(scores)):
-        if scores[i] > 0.5 and class_ids[i]>0:  # Confidence threshold
+        if scores[i] > 0.5:  # Confidence threshold
             ymin, xmin, ymax, xmax = boxes[i]
             xmin, xmax, ymin, ymax = int(xmin * w), int(xmax * w), int(ymin * h), int(ymax * h)
             label = f"{labels[int(class_ids[i])]}: {int(scores[i] * 100)}%"
