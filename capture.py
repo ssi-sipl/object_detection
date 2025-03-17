@@ -59,7 +59,7 @@ while True:
             print("classids: ",class_ids)
             class_id = class_ids[i]
             print("classid: ",int(class_id))
-            label = labels[class_id]
+            label = labels[int(class_id)]
             print("label: ", label)
             # print("class id: ",type(class_ids), "len: ", len(class_ids))
             # print("Class Id: ", class_id, "Label: ", label)
