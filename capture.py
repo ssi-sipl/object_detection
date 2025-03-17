@@ -45,7 +45,7 @@ while True:
     # print("boxes:", len(boxes))
     # print("classids: ", len(class_ids))
     # print("scores: ", len(scores))
-
+    
     # Draw bounding boxes
     h, w, _ = frame.shape
     for i in range(len(scores)):
@@ -61,6 +61,7 @@ while True:
             print("classid: ",int(class_id))
             label = labels[int(class_id)]
             print("label: ", label)
+            print("scores: ", scores)
             # print("class id: ",type(class_ids), "len: ", len(class_ids))
             # print("Class Id: ", class_id, "Label: ", label)
 
