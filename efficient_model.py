@@ -34,7 +34,7 @@ def run_inference(image):
 
     print("boxes: ", boxes)
     print("class_ids: ", class_ids)
-    print("scores: ". scores)
+    print("scores: ", scores)
     # num_detections = int(interpreter.get_tensor(output_details[3]['index'])[0])
 
     return boxes, class_ids, scores
