@@ -42,9 +42,9 @@ while True:
     boxes = interpreter.get_tensor(output_details[0]['index'])[0]
     class_ids = interpreter.get_tensor(output_details[1]['index'])[0]
     scores = interpreter.get_tensor(output_details[2]['index'])[0]
-    print("boxes:", len(boxes))
-    print("classids: ", len(class_ids))
-    print("scores: ", len(scores))
+    # print("boxes:", len(boxes))
+    # print("classids: ", len(class_ids))
+    # print("scores: ", len(scores))
 
     # Draw bounding boxes
     h, w, _ = frame.shape
