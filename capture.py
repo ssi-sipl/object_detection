@@ -52,6 +52,7 @@ while True:
             label = f"{labels[int(class_ids[i])]}: {int(scores[i] * 100)}%"
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
             cv2.putText(frame, label, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            print("class id: ",type(class_ids), "len: ", len(class_ids))
             print("Class Id: ", class_ids, "Label: ", labels[int(class_ids[i])])
 
     cv2.imshow("Camera Feed", frame)  # Display
