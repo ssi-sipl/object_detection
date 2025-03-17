@@ -11,6 +11,8 @@ input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 input_shape = input_details[0]['shape']
 
+print("OUTPUT: ", output_details)
+
 # Load labels
 with open("tflite_model/labelmap.txt", "r") as f:
     labels = [line.strip() for line in f.readlines()]
@@ -50,7 +52,7 @@ while True:
             label = f"{labels[int(class_ids[i])]}: {int(scores[i] * 100)}%"
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
             cv2.putText(frame, label, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-            print("Class Id: ", class_ids[i], "Label: ", labels[int(class_ids[i])])
+            print("Class Id: ", class_ids, "Label: ", labels[int(class_ids[i])])
 
     cv2.imshow("Camera Feed", frame)  # Display
     
