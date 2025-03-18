@@ -48,12 +48,11 @@ while True:
     resized_frame = cv2.resize(frame, (width, height))
 
     # Expand dimensions and convert to float32
+    # Fix input data shape
     input_data = np.expand_dims(resized_frame, axis=0).astype(np.float32)
 
-    # Normalize if needed (optional, check model specs)
-    input_data /= 255.0
-
-    print(f"Input Data Shape: {input_data.shape}")
+    # Check shape before setting tensor
+    print(f"Shape before setting tensor: {input_data.shape}")
     interpreter.set_tensor(input_details[0]["index"], input_data)
     interpreter.invoke()
 
