@@ -14,7 +14,7 @@ output_details = interpreter.get_output_details()
 print("Input Details: ", input_details)
 print("Output Detaisl: ", output_details)
 # Load labels file
-with open("tflite_model/labelmap1.txt", "r") as f:
+with open("tflite_model/labelmap2.txt", "r") as f:
     labels = [line.strip() for line in f.readlines()]
 
 def preprocess_frame(frame):
