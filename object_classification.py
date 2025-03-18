@@ -11,6 +11,10 @@ input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 input_shape = input_details[0]['shape']
 
+print("Input shape:", input_details.shape)
+print("Input dtype:", input_details.dtype)
+
+
 # print("OUTPUT: ", output_details)
 
 # Load labels
@@ -54,10 +58,15 @@ while True:
 
             ymin, xmin, ymax, xmax = boxes[i]
             xmin, xmax, ymin, ymax = int(xmin * w), int(xmax * w), int(ymin * h), int(ymax * h)
-            label = f"{labels[int(class_ids[i])]}: {int(scores[i] * 100)}%"
+
+            class_id = int(class_ids[i])
+            label = labels[class_id] if class_id < len(labels) else "???"
+
+            label_ = f"{label}: {int(scores[i] * 100)}%"
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
-            cv2.putText(frame, label, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-          
+            cv2.putText(frame, label_, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+            print("Raw class IDs:", class_ids)
             # print("class id: ",type(class_ids), "len: ", len(class_ids))
             # print("Class Id: ", class_id, "Label: ", label)
 
