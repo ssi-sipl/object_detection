@@ -3,7 +3,7 @@ import numpy as np
 import tflite_runtime.interpreter as tflite
 
 # --- Load the TFLite model ---
-interpreter = tflite.Interpreter(model_path="your_model.tflite")
+interpreter = tflite.Interpreter(model_path="tflite_model/detect.tflite")
 interpreter.allocate_tensors()
 
 # --- Get model input and output details ---
@@ -36,7 +36,7 @@ def load_labels(path):
     with open(path, 'r') as f:
         return {int(line.split()[0]): line.strip().split(maxsplit=1)[1] for line in f.readlines()}
 
-labels = load_labels('labels.txt')
+labels = load_labels('tflite_model/labelmap1.txt')
 
 # --- Draw boxes and labels on the image ---
 for i in range(len(scores)):
