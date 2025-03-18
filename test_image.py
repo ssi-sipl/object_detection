@@ -33,7 +33,8 @@ scores = interpreter.get_tensor(output_details[2]['index'])[0]  # Confidence sco
 # --- Load labels ---
 def load_labels(path):
     with open(path, 'r') as f:
-        return {int(line.split()[0]): line.strip().split(maxsplit=1)[1] for line in f.readlines()}
+        
+        return [line.strip() for line in f.readlines()]
 
 labels = load_labels('tflite_model/labelmap1.txt')
 

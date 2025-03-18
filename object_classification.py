@@ -11,7 +11,7 @@ input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 input_shape = input_details[0]['shape']
 
-print("OUTPUT: ", output_details)
+# print("OUTPUT: ", output_details)
 
 # Load labels
 with open("tflite_model/labelmap.txt", "r") as f:
