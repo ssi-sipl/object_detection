@@ -14,7 +14,7 @@ input_shape = input_details[0]['shape']
 # print("OUTPUT: ", output_details)
 
 # Load labels
-with open("tflite_model/labelmap.txt", "r") as f:
+with open("tflite_model/labelmap2.txt", "r") as f:
     labels = [line.strip() for line in f.readlines()]
 
 print(f"Total labels: {len(labels)}")
