@@ -18,6 +18,7 @@ with open("tflite_model/labelmap2.txt", "r") as f:
     labels = [line.strip() for line in f.readlines()]
 
 print(f"Total labels: {len(labels)}")
+print("Labels: ", labels)
 
 # Initialize camera
 picam2 = Picamera2()
