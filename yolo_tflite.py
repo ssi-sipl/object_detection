@@ -38,7 +38,11 @@ while True:
 
     # Resize and normalize the frame
     resized_frame = cv2.resize(frame, (width, height))
-    input_data = np.expand_dims(resized_frame, axis=0).astype(np.uint8)
+    input_data = np.expand_dims(resized_frame, axis=0).astype(np.float32)
+
+    # Normalize between 0 and 1 (if required by the model)
+    input_data /= 255.0
+
 
     # Run inference
     interpreter.set_tensor(input_details[0]["index"], input_data)
