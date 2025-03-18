@@ -20,8 +20,7 @@ height, width = input_shape[1], input_shape[2]
 image_resized = cv2.resize(image, (width, height))
 
 # Normalize and prepare input data
-input_data = np.expand_dims(image_resized, axis=0).astype(np.float32) / 255.0
-
+input_data = np.expand_dims(image_resized, axis=0).astype(np.uint8)
 # --- Run inference ---
 interpreter.set_tensor(input_details[0]['index'], input_data)
 interpreter.invoke()
