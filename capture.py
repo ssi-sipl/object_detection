@@ -55,13 +55,7 @@ while True:
             label = f"{labels[int(class_ids[i])]}: {int(scores[i] * 100)}%"
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
             cv2.putText(frame, label, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-            print("i: ",i)
-            print("classids: ",class_ids)
-            class_id = class_ids[i]
-            print("classid: ",int(class_id))
-            label = labels[int(class_id)]
-            print("label: ", label)
-            print("scores: ", scores)
+          
             # print("class id: ",type(class_ids), "len: ", len(class_ids))
             # print("Class Id: ", class_id, "Label: ", label)
 
