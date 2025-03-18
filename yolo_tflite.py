@@ -68,23 +68,38 @@ while True:
     interpreter.invoke()
 
 
-    # Get results
-    boxes = interpreter.get_tensor(output_details[0]["index"])[0]  # Bounding box coordinates
-    classes = interpreter.get_tensor(output_details[1]["index"])[0]  # Class index
-    scores = interpreter.get_tensor(output_details[2]["index"])[0]  # Confidence scores
+        # Get output tensor
+    output_data = interpreter.get_tensor(output_details[0]["index"])[0]
 
-    # Draw results on the frame
-    for i in range(len(scores)):
-        if scores[i] > CONFIDENCE_THRESHOLD:
-            ymin, xmin, ymax, xmax = boxes[i]
-            xmin = int(xmin * frame.shape[1])
-            xmax = int(xmax * frame.shape[1])
-            ymin = int(ymin * frame.shape[0])
-            ymax = int(ymax * frame.shape[0])
+    # Extract boxes, scores, and classes
+    boxes = output_data[:, :4]  # x, y, w, h
+    scores = output_data[:, 4]  # Confidence
+    classes = np.argmax(output_data[:, 5:], axis=-1)  # Class index
 
-            label = f"{labels[int(classes[i])]}: {int(scores[i] * 100)}%"
-            cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
-            cv2.putText(frame, label, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+    # Rescale bounding boxes to original frame size
+    boxes[:, [0, 2]] *= width
+    boxes[:, [1, 3]] *= height
+
+    # Filter out low-confidence detections
+    confidence_threshold = 0.5
+    valid_indices = np.where(scores > confidence_threshold)
+
+    # Get valid boxes, classes, and scores
+    boxes = boxes[valid_indices]
+    classes = classes[valid_indices]
+    scores = scores[valid_indices]
+
+    # Draw bounding boxes and labels
+    for i, box in enumerate(boxes):
+        x, y, w, h = box
+        x1, y1, x2, y2 = int(x - w / 2), int(y - h / 2), int(x + w / 2), int(y + h / 2)
+        
+        # Draw bounding box
+        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        
+        # Add class label and confidence
+        label = f"{labels[int(classes[i])]}: {scores[i]:.2f}"
+        cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
     # Show frame
     cv2.imshow("Object Detection", frame)
