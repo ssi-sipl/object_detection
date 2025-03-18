@@ -11,8 +11,8 @@ input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 input_shape = input_details[0]['shape']
 
-print("Input shape:", input_details.shape)
-print("Input dtype:", input_details.dtype)
+print("Input shape:", input_shape.shape)
+print("Input dtype:", input_shape.dtype)
 
 
 # print("OUTPUT: ", output_details)
