@@ -12,6 +12,9 @@ interpreter.allocate_tensors()
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
+print(f"Output Details: {output_details}")
+
+
 # Load labels
 with open("../yolov5/labelmap.txt", "r") as f:
     labels = [line.strip() for line in f.readlines()]
