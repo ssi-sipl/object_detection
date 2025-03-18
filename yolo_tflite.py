@@ -26,6 +26,9 @@ picam2.start()
 input_shape = input_details[0]["shape"]
 height, width = input_shape[1], input_shape[2]
 
+print(f"Expected Input Shape: {input_shape}")
+
+
 # Define minimum confidence threshold for detection
 CONFIDENCE_THRESHOLD = 0.5
 
