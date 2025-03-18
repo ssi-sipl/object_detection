@@ -46,7 +46,7 @@ for i in range(len(scores)):
         y_min, y_max = int(y_min * height), int(y_max * height)
         
         class_id = int(classes[i])
-        label = labels.get(class_id, "???")
+        label = labels[class_id]
         
         # Draw bounding box
         cv2.rectangle(image_resized, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
