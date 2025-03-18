@@ -37,17 +37,23 @@ print("📸 Starting Real-Time Object Detection...")
 # Main Loop
 while True:
     # Capture frame from PiCamera2
+    # Capture frame and check dimensions
     frame = picam2.capture_array()
 
-    # Resize and normalize the frame
+    # Ensure frame is RGB
+    if len(frame.shape) == 2 or frame.shape[2] == 1:
+        frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
+
+    # Resize to model input size
     resized_frame = cv2.resize(frame, (width, height))
+
+    # Expand dimensions and convert to float32
     input_data = np.expand_dims(resized_frame, axis=0).astype(np.float32)
 
-    # Normalize between 0 and 1 (if required by the model)
+    # Normalize if needed (optional, check model specs)
     input_data /= 255.0
 
-
-    # Run inference
+    print(f"Input Data Shape: {input_data.shape}")
     interpreter.set_tensor(input_details[0]["index"], input_data)
     interpreter.invoke()
 
