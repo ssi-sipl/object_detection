@@ -38,23 +38,32 @@ print("📸 Starting Real-Time Object Detection...")
 while True:
     # Capture frame from PiCamera2
     # Capture frame and check dimensions
+    # Get frame from PiCamera2
     frame = picam2.capture_array()
 
-    # Ensure frame is RGB
-    if len(frame.shape) == 2 or frame.shape[2] == 1:
+    # Convert to RGB if grayscale or RGBA
+    if len(frame.shape) == 2:
         frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
+    elif frame.shape[2] == 4:
+        frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
 
-    # Resize to model input size
+    # Resize to model's input size
     resized_frame = cv2.resize(frame, (width, height))
 
     # Expand dimensions and convert to float32
-    # Fix input data shape
     input_data = np.expand_dims(resized_frame, axis=0).astype(np.float32)
+
+    # Normalize (if needed)
+    input_data /= 255.0
 
     # Check shape before setting tensor
     print(f"Shape before setting tensor: {input_data.shape}")
+    print(f"Type before setting tensor: {input_data.dtype}")
+
+    # Set the input tensor
     interpreter.set_tensor(input_details[0]["index"], input_data)
     interpreter.invoke()
+
 
     # Get results
     boxes = interpreter.get_tensor(output_details[0]["index"])[0]  # Bounding box coordinates
