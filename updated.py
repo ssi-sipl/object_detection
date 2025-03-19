@@ -112,8 +112,9 @@ def create_tracker(tracker_type="KCF"):
     """Create a tracker based on the specified type."""
     if tracker_type == 'CSRT':
         return cv2.legacy.TrackerCSRT_create()
+    
     elif tracker_type == 'KCF':
-        return cv2.legacy.TrackerKCF_create()
+        return cv2.TrackerKCF_create()
     elif tracker_type == 'MOSSE':
         return cv2.legacy.TrackerMOSSE_create()
     else:
