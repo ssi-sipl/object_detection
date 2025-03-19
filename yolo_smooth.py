@@ -7,6 +7,7 @@ import time
 
 # Load YOLOv5n Model
 model = YOLO('../yolov5/yolov5n.pt')
+cv2.setNumThreads(4)
 
 # Initialize PiCamera2
 picam2 = Picamera2()
