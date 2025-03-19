@@ -33,6 +33,8 @@ def process_frames():
         with lock:
             if latest_frame is not None:
                 frame_copy = latest_frame.copy()
+            else:
+                frame_copy = None  # Safeguard if frame is None
         
         if frame_copy is not None:
             # Run YOLO inference
@@ -62,12 +64,12 @@ thread2 = threading.Thread(target=process_frames, daemon=True)
 thread1.start()
 thread2.start()
 
-# Display Loop
+# Main Thread - Display Frames Smoothly
 while True:
     with lock:
-        if processed_frame is not None:
+        if processed_frame is not None and processed_frame.shape[0] > 0 and processed_frame.shape[1] > 0:
             cv2.imshow("YOLOv5 Detection", processed_frame)
-        else:
+        elif latest_frame is not None and latest_frame.shape[0] > 0 and latest_frame.shape[1] > 0:
             cv2.imshow("YOLOv5 Detection", latest_frame)
 
     # Break loop on 'q' press
