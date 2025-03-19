@@ -3,7 +3,7 @@ from picamera2 import Picamera2
 from ultralytics import YOLO
 
 # Load YOLOv8 model
-model = YOLO('../yolov5/yolov8n.pt')
+model = YOLO('../yolov5/yolov5n.pt')
 
 # Initialize PiCamera2
 picam2 = Picamera2()
