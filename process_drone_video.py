@@ -1,15 +1,14 @@
 import cv2
-import torch
 from ultralytics import YOLO
 
-# Load YOLOv5s model (small model for speed)
-model = YOLO('yolov5s.pt')
+# Load YOLOv5 model (small updated version)
+model = YOLO('yolov5s.pt')  # Or use 'yolov5su.pt' for better performance
 
 # Input and output file paths
 input_video_path = 'videos/02.mp4'
 output_video_path = 'output_videos/output.mp4'
 
-# Open video
+# Open video file
 cap = cv2.VideoCapture(input_video_path)
 if not cap.isOpened():
     print("Error: Unable to open video file.")
@@ -31,16 +30,24 @@ while cap.isOpened():
 
     # Run YOLOv5 inference on the frame
     results = model.predict(frame, conf=0.5, verbose=False)
-    print(results)
 
     # Draw bounding boxes and labels
-    for obj in results.xyxy[0]:
-        x1, y1, x2, y2, conf, cls = obj
-        label = f"{model.names[int(cls)]} ({conf:.2f})"
-        cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
-        cv2.putText(frame, label, (int(x1), int(y1 - 5)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+    for result in results:
+        boxes = result.boxes.xyxy.cpu().numpy()  # Bounding boxes
+        confs = result.boxes.conf.cpu().numpy()  # Confidence scores
+        classes = result.boxes.cls.cpu().numpy()  # Class IDs
 
-    # Write frame to output video
+        for i, box in enumerate(boxes):
+            x1, y1, x2, y2 = box
+            conf = confs[i]
+            cls = classes[i]
+            label = f"{model.names[int(cls)]} ({conf:.2f})"
+            
+            # Draw bounding box and label
+            cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
+            cv2.putText(frame, label, (int(x1), int(y1) - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+    # Write the processed frame to output
     out.write(frame)
 
 # Release resources
