@@ -31,6 +31,7 @@ while cap.isOpened():
 
     # Run YOLOv5 inference on the frame
     results = model.predict(frame, conf=0.5, verbose=False)
+    print(results)
 
     # Draw bounding boxes and labels
     for obj in results.xyxy[0]:
