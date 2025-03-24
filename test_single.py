@@ -78,6 +78,6 @@ try:
 finally:
     # Clean up and release resources
     cv2.destroyAllWindows()
-    input_vstreams.close()
-    output_vstreams.close()
+    # input_vstreams.close()
+    # output_vstreams.close()
     
