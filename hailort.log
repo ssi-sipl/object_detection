@@ -1,0 +1,207 @@
+[2025-03-19 16:36:10.693] [16369] [HailoRT] [info] [vdevice.cpp:523] [create] Creating vdevice with params: device_count: 1, scheduling_algorithm: ROUND_ROBIN, multi_process_service: false
+[2025-03-19 16:36:10.706] [16369] [HailoRT] [info] [device.cpp:49] [Device] OS Version: Linux 6.6.74+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.74-1+rpt1 (2025-01-27) aarch64
+[2025-03-19 16:36:10.707] [16369] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-19 16:36:10.707] [16369] [HailoRT] [info] [vdevice.cpp:651] [create] VDevice Infos: 0000:01:00.0
+[2025-03-19 16:36:10.708] [16369] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-19 16:36:10.772] [16369] [HailoRT] [info] [hef.cpp:1929] [get_network_group_and_network_name] No name was given. Addressing all networks of default network_group: yolov6n
+[2025-03-19 16:36:10.772] [16369] [HailoRT] [info] [hef.cpp:1929] [get_network_group_and_network_name] No name was given. Addressing all networks of default network_group: yolov6n
+[2025-03-19 16:36:10.778] [16369] [HailoRT] [info] [internal_buffer_manager.cpp:202] [print_execution_results] Default Internal buffer planner failed to meet requirements
+[2025-03-19 16:36:10.778] [16369] [HailoRT] [info] [internal_buffer_manager.cpp:212] [print_execution_results] Default Internal buffer planner executed successfully
+[2025-03-19 16:36:10.783] [16369] [HailoRT] [info] [device_internal.cpp:57] [configure] Configuring HEF took 9.80848 milliseconds
+[2025-03-19 16:36:10.783] [16369] [HailoRT] [info] [vdevice.cpp:749] [configure] Configuring HEF on VDevice took 10.230689 milliseconds
+[2025-03-19 16:36:10.783] [16369] [HailoRT] [info] [infer_model.cpp:436] [configure] Configuring network group 'yolov6n' with params: batch size: 0, power mode: PERFORMANCE, latency: MEASURE
+[2025-03-19 16:36:10.783] [16369] [HailoRT] [info] [multi_io_elements.cpp:756] [create] Created (AsyncHwEl)
+[2025-03-19 16:36:10.783] [16369] [HailoRT] [info] [queue_elements.cpp:450] [create] Created (EntryPushQEl0yolov6n/input_layer1 | timeout: 10s)
+[2025-03-19 16:36:10.784] [16369] [HailoRT] [info] [filter_elements.cpp:101] [create] Created (PreInferEl3yolov6n/input_layer1 | Reorder - src_order: NHWC, src_shape: (640, 640, 3), dst_order: NHCW, dst_shape: (640, 640, 3))
+[2025-03-19 16:36:10.784] [16369] [HailoRT] [info] [queue_elements.cpp:450] [create] Created (PushQEl3yolov6n/input_layer1 | timeout: 10s)
+[2025-03-19 16:36:10.784] [16369] [HailoRT] [info] [multi_io_elements.cpp:135] [create] Created (NmsPPMuxEl0YOLOX-Post-Process | Op YOLOX, Name: YOLOX-Post-Process, Score threshold: 0.200, IoU threshold: 0.65, Classes: 80, Cross classes: false, NMS results order: BY_CLASS, Max bboxes per class: 100, Image height: 640, Image width: 640)
+[2025-03-19 16:36:10.785] [16369] [HailoRT] [info] [queue_elements.cpp:942] [create] Created (MultiPushQEl0YOLOX-Post-Process | timeout: 10s)
+[2025-03-19 16:36:10.785] [16369] [HailoRT] [info] [edge_elements.cpp:187] [create] Created (LastAsyncEl0NmsPPMuxEl0YOLOX-Post-Process)
+[2025-03-19 16:36:10.785] [16369] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] EntryPushQEl0yolov6n/input_layer1 | inputs: user | outputs: PreInferEl3yolov6n/input_layer1(running in thread_id: 16390)
+[2025-03-19 16:36:10.785] [16369] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] PreInferEl3yolov6n/input_layer1 | inputs: EntryPushQEl0yolov6n/input_layer1[0] | outputs: PushQEl3yolov6n/input_layer1
+[2025-03-19 16:36:10.785] [16369] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] PushQEl3yolov6n/input_layer1 | inputs: PreInferEl3yolov6n/input_layer1[0] | outputs: AsyncHwEl(running in thread_id: 16391)
+[2025-03-19 16:36:10.785] [16369] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] AsyncHwEl | inputs: PushQEl3yolov6n/input_layer1[0] | outputs: MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process
+[2025-03-19 16:36:10.785] [16369] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] MultiPushQEl0YOLOX-Post-Process | inputs: AsyncHwEl[0] AsyncHwEl[1] AsyncHwEl[2] AsyncHwEl[3] AsyncHwEl[4] AsyncHwEl[5] AsyncHwEl[6] AsyncHwEl[7] AsyncHwEl[8] | outputs: NmsPPMuxEl0YOLOX-Post-Process(running in thread_id: 16392)
+[2025-03-19 16:36:10.785] [16369] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] NmsPPMuxEl0YOLOX-Post-Process | inputs: MultiPushQEl0YOLOX-Post-Process[0] | outputs: LastAsyncEl0NmsPPMuxEl0YOLOX-Post-Process
+[2025-03-19 16:36:10.785] [16369] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] LastAsyncEl0NmsPPMuxEl0YOLOX-Post-Process | inputs: NmsPPMuxEl0YOLOX-Post-Process[0] | outputs: user
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [async_infer_runner.cpp:86] [shutdown] Pipeline was aborted. Shutting it down
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [async_infer_runner.cpp:86] [shutdown] Pipeline was aborted. Shutting it down
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [queue_elements.cpp:570] [execute_deactivate] enqueue() in element PushQEl3yolov6n/input_layer1 was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:38:14.230] [16369] [HailoRT] [info] [queue_elements.cpp:570] [execute_deactivate] enqueue() in element EntryPushQEl0yolov6n/input_layer1 was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:38:14.231] [16369] [HailoRT] [info] [queue_elements.cpp:46] [~BaseQueueElement] Queue element EntryPushQEl0yolov6n/input_layer1 has 0 frames in his Queue on destruction
+[2025-03-19 16:38:14.231] [16369] [HailoRT] [info] [queue_elements.cpp:46] [~BaseQueueElement] Queue element PushQEl3yolov6n/input_layer1 has 0 frames in his Queue on destruction
+[2025-03-19 16:38:41.193] [20094] [HailoRT] [info] [vdevice.cpp:523] [create] Creating vdevice with params: device_count: 1, scheduling_algorithm: ROUND_ROBIN, multi_process_service: false
+[2025-03-19 16:38:41.206] [20094] [HailoRT] [info] [device.cpp:49] [Device] OS Version: Linux 6.6.74+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.74-1+rpt1 (2025-01-27) aarch64
+[2025-03-19 16:38:41.207] [20094] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-19 16:38:41.207] [20094] [HailoRT] [info] [vdevice.cpp:651] [create] VDevice Infos: 0000:01:00.0
+[2025-03-19 16:38:41.208] [20094] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-19 16:38:41.270] [20094] [HailoRT] [info] [hef.cpp:1929] [get_network_group_and_network_name] No name was given. Addressing all networks of default network_group: yolov6n
+[2025-03-19 16:38:41.271] [20094] [HailoRT] [info] [hef.cpp:1929] [get_network_group_and_network_name] No name was given. Addressing all networks of default network_group: yolov6n
+[2025-03-19 16:38:41.277] [20094] [HailoRT] [info] [internal_buffer_manager.cpp:202] [print_execution_results] Default Internal buffer planner failed to meet requirements
+[2025-03-19 16:38:41.277] [20094] [HailoRT] [info] [internal_buffer_manager.cpp:212] [print_execution_results] Default Internal buffer planner executed successfully
+[2025-03-19 16:38:41.281] [20094] [HailoRT] [info] [device_internal.cpp:57] [configure] Configuring HEF took 9.973063 milliseconds
+[2025-03-19 16:38:41.282] [20094] [HailoRT] [info] [vdevice.cpp:749] [configure] Configuring HEF on VDevice took 10.457457 milliseconds
+[2025-03-19 16:38:41.282] [20094] [HailoRT] [info] [infer_model.cpp:436] [configure] Configuring network group 'yolov6n' with params: batch size: 0, power mode: PERFORMANCE, latency: MEASURE
+[2025-03-19 16:38:41.282] [20094] [HailoRT] [info] [multi_io_elements.cpp:756] [create] Created (AsyncHwEl)
+[2025-03-19 16:38:41.282] [20094] [HailoRT] [info] [queue_elements.cpp:450] [create] Created (EntryPushQEl0yolov6n/input_layer1 | timeout: 10s)
+[2025-03-19 16:38:41.282] [20094] [HailoRT] [info] [filter_elements.cpp:101] [create] Created (PreInferEl3yolov6n/input_layer1 | Reorder - src_order: NHWC, src_shape: (640, 640, 3), dst_order: NHCW, dst_shape: (640, 640, 3))
+[2025-03-19 16:38:41.282] [20094] [HailoRT] [info] [queue_elements.cpp:450] [create] Created (PushQEl3yolov6n/input_layer1 | timeout: 10s)
+[2025-03-19 16:38:41.283] [20094] [HailoRT] [info] [multi_io_elements.cpp:135] [create] Created (NmsPPMuxEl0YOLOX-Post-Process | Op YOLOX, Name: YOLOX-Post-Process, Score threshold: 0.200, IoU threshold: 0.65, Classes: 80, Cross classes: false, NMS results order: BY_CLASS, Max bboxes per class: 100, Image height: 640, Image width: 640)
+[2025-03-19 16:38:41.283] [20094] [HailoRT] [info] [queue_elements.cpp:942] [create] Created (MultiPushQEl0YOLOX-Post-Process | timeout: 10s)
+[2025-03-19 16:38:41.283] [20094] [HailoRT] [info] [edge_elements.cpp:187] [create] Created (LastAsyncEl0NmsPPMuxEl0YOLOX-Post-Process)
+[2025-03-19 16:38:41.283] [20094] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] EntryPushQEl0yolov6n/input_layer1 | inputs: user | outputs: PreInferEl3yolov6n/input_layer1(running in thread_id: 20113)
+[2025-03-19 16:38:41.283] [20094] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] PreInferEl3yolov6n/input_layer1 | inputs: EntryPushQEl0yolov6n/input_layer1[0] | outputs: PushQEl3yolov6n/input_layer1
+[2025-03-19 16:38:41.283] [20094] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] PushQEl3yolov6n/input_layer1 | inputs: PreInferEl3yolov6n/input_layer1[0] | outputs: AsyncHwEl(running in thread_id: 20114)
+[2025-03-19 16:38:41.283] [20094] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] AsyncHwEl | inputs: PushQEl3yolov6n/input_layer1[0] | outputs: MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process
+[2025-03-19 16:38:41.283] [20094] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] MultiPushQEl0YOLOX-Post-Process | inputs: AsyncHwEl[0] AsyncHwEl[1] AsyncHwEl[2] AsyncHwEl[3] AsyncHwEl[4] AsyncHwEl[5] AsyncHwEl[6] AsyncHwEl[7] AsyncHwEl[8] | outputs: NmsPPMuxEl0YOLOX-Post-Process(running in thread_id: 20115)
+[2025-03-19 16:38:41.283] [20094] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] NmsPPMuxEl0YOLOX-Post-Process | inputs: MultiPushQEl0YOLOX-Post-Process[0] | outputs: LastAsyncEl0NmsPPMuxEl0YOLOX-Post-Process
+[2025-03-19 16:38:41.283] [20094] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] LastAsyncEl0NmsPPMuxEl0YOLOX-Post-Process | inputs: NmsPPMuxEl0YOLOX-Post-Process[0] | outputs: user
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [async_infer_runner.cpp:86] [shutdown] Pipeline was aborted. Shutting it down
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [async_infer_runner.cpp:86] [shutdown] Pipeline was aborted. Shutting it down
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:570] [execute_deactivate] enqueue() in element PushQEl3yolov6n/input_layer1 was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:570] [execute_deactivate] enqueue() in element EntryPushQEl0yolov6n/input_layer1 was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:46] [~BaseQueueElement] Queue element EntryPushQEl0yolov6n/input_layer1 has 0 frames in his Queue on destruction
+[2025-03-19 16:39:13.531] [20094] [HailoRT] [info] [queue_elements.cpp:46] [~BaseQueueElement] Queue element PushQEl3yolov6n/input_layer1 has 0 frames in his Queue on destruction
+[2025-03-19 17:15:10.178] [21436] [HailoRT] [info] [vdevice.cpp:523] [create] Creating vdevice with params: device_count: 1, scheduling_algorithm: ROUND_ROBIN, multi_process_service: false
+[2025-03-19 17:15:10.191] [21436] [HailoRT] [info] [device.cpp:49] [Device] OS Version: Linux 6.6.74+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.74-1+rpt1 (2025-01-27) aarch64
+[2025-03-19 17:15:10.192] [21436] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-19 17:15:10.193] [21436] [HailoRT] [info] [vdevice.cpp:651] [create] VDevice Infos: 0000:01:00.0
+[2025-03-19 17:15:10.193] [21436] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-19 17:15:10.258] [21436] [HailoRT] [info] [hef.cpp:1929] [get_network_group_and_network_name] No name was given. Addressing all networks of default network_group: yolov6n
+[2025-03-19 17:15:10.258] [21436] [HailoRT] [info] [hef.cpp:1929] [get_network_group_and_network_name] No name was given. Addressing all networks of default network_group: yolov6n
+[2025-03-19 17:15:10.265] [21436] [HailoRT] [info] [internal_buffer_manager.cpp:202] [print_execution_results] Default Internal buffer planner failed to meet requirements
+[2025-03-19 17:15:10.265] [21436] [HailoRT] [info] [internal_buffer_manager.cpp:212] [print_execution_results] Default Internal buffer planner executed successfully
+[2025-03-19 17:15:10.273] [21436] [HailoRT] [info] [device_internal.cpp:57] [configure] Configuring HEF took 14.227564 milliseconds
+[2025-03-19 17:15:10.273] [21436] [HailoRT] [info] [vdevice.cpp:749] [configure] Configuring HEF on VDevice took 14.675922 milliseconds
+[2025-03-19 17:15:10.273] [21436] [HailoRT] [info] [infer_model.cpp:436] [configure] Configuring network group 'yolov6n' with params: batch size: 0, power mode: PERFORMANCE, latency: MEASURE
+[2025-03-19 17:15:10.274] [21436] [HailoRT] [info] [multi_io_elements.cpp:756] [create] Created (AsyncHwEl)
+[2025-03-19 17:15:10.274] [21436] [HailoRT] [info] [queue_elements.cpp:450] [create] Created (EntryPushQEl0yolov6n/input_layer1 | timeout: 10s)
+[2025-03-19 17:15:10.274] [21436] [HailoRT] [info] [filter_elements.cpp:101] [create] Created (PreInferEl3yolov6n/input_layer1 | Reorder - src_order: NHWC, src_shape: (640, 640, 3), dst_order: NHCW, dst_shape: (640, 640, 3))
+[2025-03-19 17:15:10.274] [21436] [HailoRT] [info] [queue_elements.cpp:450] [create] Created (PushQEl3yolov6n/input_layer1 | timeout: 10s)
+[2025-03-19 17:15:10.274] [21436] [HailoRT] [info] [multi_io_elements.cpp:135] [create] Created (NmsPPMuxEl0YOLOX-Post-Process | Op YOLOX, Name: YOLOX-Post-Process, Score threshold: 0.200, IoU threshold: 0.65, Classes: 80, Cross classes: false, NMS results order: BY_CLASS, Max bboxes per class: 100, Image height: 640, Image width: 640)
+[2025-03-19 17:15:10.275] [21436] [HailoRT] [info] [queue_elements.cpp:942] [create] Created (MultiPushQEl0YOLOX-Post-Process | timeout: 10s)
+[2025-03-19 17:15:10.275] [21436] [HailoRT] [info] [edge_elements.cpp:187] [create] Created (LastAsyncEl0NmsPPMuxEl0YOLOX-Post-Process)
+[2025-03-19 17:15:10.275] [21436] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] EntryPushQEl0yolov6n/input_layer1 | inputs: user | outputs: PreInferEl3yolov6n/input_layer1(running in thread_id: 21455)
+[2025-03-19 17:15:10.275] [21436] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] PreInferEl3yolov6n/input_layer1 | inputs: EntryPushQEl0yolov6n/input_layer1[0] | outputs: PushQEl3yolov6n/input_layer1
+[2025-03-19 17:15:10.275] [21436] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] PushQEl3yolov6n/input_layer1 | inputs: PreInferEl3yolov6n/input_layer1[0] | outputs: AsyncHwEl(running in thread_id: 21456)
+[2025-03-19 17:15:10.275] [21436] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] AsyncHwEl | inputs: PushQEl3yolov6n/input_layer1[0] | outputs: MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process MultiPushQEl0YOLOX-Post-Process
+[2025-03-19 17:15:10.275] [21436] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] MultiPushQEl0YOLOX-Post-Process | inputs: AsyncHwEl[0] AsyncHwEl[1] AsyncHwEl[2] AsyncHwEl[3] AsyncHwEl[4] AsyncHwEl[5] AsyncHwEl[6] AsyncHwEl[7] AsyncHwEl[8] | outputs: NmsPPMuxEl0YOLOX-Post-Process(running in thread_id: 21457)
+[2025-03-19 17:15:10.275] [21436] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] NmsPPMuxEl0YOLOX-Post-Process | inputs: MultiPushQEl0YOLOX-Post-Process[0] | outputs: LastAsyncEl0NmsPPMuxEl0YOLOX-Post-Process
+[2025-03-19 17:15:10.275] [21436] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] LastAsyncEl0NmsPPMuxEl0YOLOX-Post-Process | inputs: NmsPPMuxEl0YOLOX-Post-Process[0] | outputs: user
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [async_infer_runner.cpp:86] [shutdown] Pipeline was aborted. Shutting it down
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [async_infer_runner.cpp:86] [shutdown] Pipeline was aborted. Shutting it down
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:1131] [execute_deactivate] enqueue() in element MultiPushQEl0YOLOX-Post-Process was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:570] [execute_deactivate] enqueue() in element PushQEl3yolov6n/input_layer1 was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:570] [execute_deactivate] enqueue() in element EntryPushQEl0yolov6n/input_layer1 was aborted, got status = HAILO_SHUTDOWN_EVENT_SIGNALED(57)
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:46] [~BaseQueueElement] Queue element EntryPushQEl0yolov6n/input_layer1 has 0 frames in his Queue on destruction
+[2025-03-19 17:15:14.355] [21436] [HailoRT] [info] [queue_elements.cpp:46] [~BaseQueueElement] Queue element PushQEl3yolov6n/input_layer1 has 0 frames in his Queue on destruction
+[2025-03-19 17:15:23.031] [21575] [HailoRT] [info] [vdevice.cpp:523] [create] Creating vdevice with params: device_count: 1, scheduling_algorithm: ROUND_ROBIN, multi_process_service: false
+[2025-03-19 17:15:23.043] [21575] [HailoRT] [info] [device.cpp:49] [Device] OS Version: Linux 6.6.74+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.74-1+rpt1 (2025-01-27) aarch64
+[2025-03-19 17:15:23.045] [21575] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-19 17:15:23.045] [21575] [HailoRT] [info] [vdevice.cpp:651] [create] VDevice Infos: 0000:01:00.0
+[2025-03-19 17:15:23.046] [21575] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-19 17:15:23.205] [21575] [HailoRT] [info] [hef.cpp:1929] [get_network_group_and_network_name] No name was given. Addressing all networks of default network_group: yolov8s
+[2025-03-19 17:15:23.205] [21575] [HailoRT] [info] [hef.cpp:1929] [get_network_group_and_network_name] No name was given. Addressing all networks of default network_group: yolov8s
+[2025-03-19 17:15:23.212] [21575] [HailoRT] [info] [internal_buffer_manager.cpp:204] [print_execution_results] Planned internal buffer memory: CMA memory 0, user memory 2277888. memory to edge layer usage factor is 1
+[2025-03-19 17:15:23.212] [21575] [HailoRT] [info] [internal_buffer_manager.cpp:212] [print_execution_results] Default Internal buffer planner executed successfully
+[2025-03-19 17:15:23.227] [21575] [HailoRT] [info] [device_internal.cpp:57] [configure] Configuring HEF took 21.01275 milliseconds
+[2025-03-19 17:15:23.227] [21575] [HailoRT] [info] [vdevice.cpp:749] [configure] Configuring HEF on VDevice took 21.4057 milliseconds
+[2025-03-19 17:15:23.227] [21575] [HailoRT] [info] [infer_model.cpp:436] [configure] Configuring network group 'yolov8s' with params: batch size: 0, power mode: PERFORMANCE, latency: MEASURE
+[2025-03-19 17:15:23.227] [21575] [HailoRT] [info] [multi_io_elements.cpp:756] [create] Created (AsyncHwEl)
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [queue_elements.cpp:450] [create] Created (EntryPushQEl0yolov8s/input_layer1 | timeout: 10s)
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [filter_elements.cpp:101] [create] Created (PreInferEl3yolov8s/input_layer1 | Reorder - src_order: NHWC, src_shape: (640, 640, 3), dst_order: NHCW, dst_shape: (640, 640, 3))
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [queue_elements.cpp:450] [create] Created (PushQEl3yolov8s/input_layer1 | timeout: 10s)
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [multi_io_elements.cpp:135] [create] Created (NmsPPMuxEl0YOLOV8-Post-Process | Op YOLOV8, Name: YOLOV8-Post-Process, Score threshold: 0.200, IoU threshold: 0.70, Classes: 80, Cross classes: false, NMS results order: BY_CLASS, Max bboxes per class: 100, Image height: 640, Image width: 640)
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [queue_elements.cpp:942] [create] Created (MultiPushQEl0YOLOV8-Post-Process | timeout: 10s)
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [edge_elements.cpp:187] [create] Created (LastAsyncEl0NmsPPMuxEl0YOLOV8-Post-Process)
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] EntryPushQEl0yolov8s/input_layer1 | inputs: user | outputs: PreInferEl3yolov8s/input_layer1(running in thread_id: 21594)
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] PreInferEl3yolov8s/input_layer1 | inputs: EntryPushQEl0yolov8s/input_layer1[0] | outputs: PushQEl3yolov8s/input_layer1
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] PushQEl3yolov8s/input_layer1 | inputs: PreInferEl3yolov8s/input_layer1[0] | outputs: AsyncHwEl(running in thread_id: 21595)
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] AsyncHwEl | inputs: PushQEl3yolov8s/input_layer1[0] | outputs: MultiPushQEl0YOLOV8-Post-Process MultiPushQEl0YOLOV8-Post-Process MultiPushQEl0YOLOV8-Post-Process MultiPushQEl0YOLOV8-Post-Process MultiPushQEl0YOLOV8-Post-Process MultiPushQEl0YOLOV8-Post-Process
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] MultiPushQEl0YOLOV8-Post-Process | inputs: AsyncHwEl[0] AsyncHwEl[1] AsyncHwEl[2] AsyncHwEl[3] AsyncHwEl[4] AsyncHwEl[5] | outputs: NmsPPMuxEl0YOLOV8-Post-Process(running in thread_id: 21596)
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] NmsPPMuxEl0YOLOV8-Post-Process | inputs: MultiPushQEl0YOLOV8-Post-Process[0] | outputs: LastAsyncEl0NmsPPMuxEl0YOLOV8-Post-Process
+[2025-03-19 17:15:23.228] [21575] [HailoRT] [info] [pipeline.cpp:891] [print_deep_description] LastAsyncEl0NmsPPMuxEl0YOLOV8-Post-Process | inputs: NmsPPMuxEl0YOLOV8-Post-Process[0] | outputs: user
+[2025-03-24 14:07:45.340] [4626] [HailoRT] [info] [device.cpp:49] [Device] OS Version: Linux 6.6.74+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.74-1+rpt1 (2025-01-27) aarch64
+[2025-03-24 14:07:45.341] [4626] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-24 14:07:45.342] [4626] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-24 14:09:01.421] [4658] [HailoRT] [info] [vdevice.cpp:523] [create] Creating vdevice with params: device_count: 1, scheduling_algorithm: NONE, multi_process_service: false
+[2025-03-24 14:09:01.432] [4658] [HailoRT] [info] [device.cpp:49] [Device] OS Version: Linux 6.6.74+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.74-1+rpt1 (2025-01-27) aarch64
+[2025-03-24 14:09:01.433] [4658] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-24 14:09:01.433] [4658] [HailoRT] [info] [vdevice.cpp:651] [create] VDevice Infos: 0000:01:00.0
+[2025-03-24 14:13:06.380] [4727] [HailoRT] [error] [hef.cpp:476] [parse_hef_header_before_distinct] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:13:06.381] [4727] [HailoRT] [error] [hef.cpp:533] [parse_hef_file] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:13:06.381] [4727] [HailoRT] [error] [hef.cpp:1002] [Impl] Failed parsing HEF file
+[2025-03-24 14:13:06.381] [4727] [HailoRT] [error] [hef.cpp:314] [create] Failed creating HEF
+[2025-03-24 14:13:06.381] [4727] [HailoRT] [error] [hef.cpp:170] [create] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:14:19.634] [4745] [HailoRT] [error] [hef.cpp:476] [parse_hef_header_before_distinct] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:14:19.634] [4745] [HailoRT] [error] [hef.cpp:533] [parse_hef_file] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:14:19.634] [4745] [HailoRT] [error] [hef.cpp:1002] [Impl] Failed parsing HEF file
+[2025-03-24 14:14:19.634] [4745] [HailoRT] [error] [hef.cpp:314] [create] Failed creating HEF
+[2025-03-24 14:14:19.634] [4745] [HailoRT] [error] [hef.cpp:170] [create] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:16:43.215] [4796] [HailoRT] [error] [hef.cpp:476] [parse_hef_header_before_distinct] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:16:43.215] [4796] [HailoRT] [error] [hef.cpp:533] [parse_hef_file] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:16:43.215] [4796] [HailoRT] [error] [hef.cpp:1002] [Impl] Failed parsing HEF file
+[2025-03-24 14:16:43.215] [4796] [HailoRT] [error] [hef.cpp:314] [create] Failed creating HEF
+[2025-03-24 14:16:43.215] [4796] [HailoRT] [error] [hef.cpp:170] [create] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:20:17.161] [4872] [HailoRT] [error] [hef.cpp:476] [parse_hef_header_before_distinct] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:20:17.161] [4872] [HailoRT] [error] [hef.cpp:533] [parse_hef_file] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:20:17.161] [4872] [HailoRT] [error] [hef.cpp:1002] [Impl] Failed parsing HEF file
+[2025-03-24 14:20:17.161] [4872] [HailoRT] [error] [hef.cpp:314] [create] Failed creating HEF
+[2025-03-24 14:20:17.161] [4872] [HailoRT] [error] [hef.cpp:170] [create] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:20:57.812] [4894] [HailoRT] [error] [hef.cpp:476] [parse_hef_header_before_distinct] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:20:57.812] [4894] [HailoRT] [error] [hef.cpp:533] [parse_hef_file] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:20:57.812] [4894] [HailoRT] [error] [hef.cpp:1002] [Impl] Failed parsing HEF file
+[2025-03-24 14:20:57.812] [4894] [HailoRT] [error] [hef.cpp:314] [create] Failed creating HEF
+[2025-03-24 14:20:57.812] [4894] [HailoRT] [error] [hef.cpp:170] [create] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:24:45.900] [4961] [HailoRT] [error] [hef.cpp:476] [parse_hef_header_before_distinct] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:24:45.900] [4961] [HailoRT] [error] [hef.cpp:533] [parse_hef_file] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:24:45.900] [4961] [HailoRT] [error] [hef.cpp:1002] [Impl] Failed parsing HEF file
+[2025-03-24 14:24:45.900] [4961] [HailoRT] [error] [hef.cpp:314] [create] Failed creating HEF
+[2025-03-24 14:24:45.900] [4961] [HailoRT] [error] [hef.cpp:170] [create] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 14:25:42.631] [4972] [HailoRT] [info] [device.cpp:49] [Device] OS Version: Linux 6.6.74+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.74-1+rpt1 (2025-01-27) aarch64
+[2025-03-24 14:25:42.633] [4972] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-24 14:25:42.633] [4972] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-24 15:48:38.498] [2573] [HailoRT] [info] [vdevice.cpp:523] [create] Creating vdevice with params: device_count: 1, scheduling_algorithm: NONE, multi_process_service: false
+[2025-03-24 15:48:38.518] [2573] [HailoRT] [info] [device.cpp:49] [Device] OS Version: Linux 6.6.74+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.74-1+rpt1 (2025-01-27) aarch64
+[2025-03-24 15:48:38.521] [2573] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-24 15:48:38.524] [2573] [HailoRT] [info] [vdevice.cpp:651] [create] VDevice Infos: 0000:01:00.0
+[2025-03-24 15:48:38.526] [2573] [HailoRT] [error] [file_utils.cpp:40] [read_binary_file] CHECK failed - Error opening file ../hefs/yolov8s_h8l.hef
+[2025-03-24 15:48:38.530] [2573] [HailoRT] [error] [hef.cpp:525] [parse_hef_file] CHECK_SUCCESS failed with status=HAILO_OPEN_FILE_FAILURE(13)
+[2025-03-24 15:48:38.530] [2573] [HailoRT] [error] [hef.cpp:1002] [Impl] Failed parsing HEF file
+[2025-03-24 15:48:38.530] [2573] [HailoRT] [error] [hef.cpp:314] [create] Failed creating HEF
+[2025-03-24 15:48:38.530] [2573] [HailoRT] [error] [hef.cpp:170] [create] CHECK_SUCCESS failed with status=HAILO_OPEN_FILE_FAILURE(13)
+[2025-03-24 16:03:47.482] [2917] [HailoRT] [error] [hef.cpp:476] [parse_hef_header_before_distinct] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 16:03:47.482] [2917] [HailoRT] [error] [hef.cpp:533] [parse_hef_file] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 16:03:47.482] [2917] [HailoRT] [error] [hef.cpp:1002] [Impl] Failed parsing HEF file
+[2025-03-24 16:03:47.482] [2917] [HailoRT] [error] [hef.cpp:314] [create] Failed creating HEF
+[2025-03-24 16:03:47.482] [2917] [HailoRT] [error] [hef.cpp:170] [create] CHECK_SUCCESS failed with status=HAILO_FILE_OPERATION_FAILURE(14)
+[2025-03-24 17:26:38.585] [4801] [HailoRT] [info] [vdevice.cpp:523] [create] Creating vdevice with params: device_count: 1, scheduling_algorithm: NONE, multi_process_service: false
+[2025-03-24 17:26:38.596] [4801] [HailoRT] [info] [device.cpp:49] [Device] OS Version: Linux 6.6.74+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.74-1+rpt1 (2025-01-27) aarch64
+[2025-03-24 17:26:38.598] [4801] [HailoRT] [info] [control.cpp:108] [control__parse_identify_results] firmware_version is: 4.20.0
+[2025-03-24 17:26:38.598] [4801] [HailoRT] [info] [vdevice.cpp:651] [create] VDevice Infos: 0000:01:00.0

@@ -4,7 +4,7 @@ from picamera2 import Picamera2
 from hailo_platform import (HEF, InferVStreams, VDevice)
 
 # Load YOLOv8 HEF model
-hef_path = "./yolov8s_h8l.hef"
+hef_path = "/usr/share/hailo-models/yolov8s_h8l.hef"
 hef = HEF(hef_path)
 
 # Initialize Hailo device

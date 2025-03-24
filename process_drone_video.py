@@ -2,7 +2,7 @@ import cv2
 from ultralytics import YOLO
 
 # Load YOLOv5 model (small updated version)
-model = YOLO('yolov5s.pt')  # Or use 'yolov5su.pt' for better performance
+model = YOLO('../yolov5/yolov8n.pt')  # Or use 'yolov5su.pt' for better performance
 
 # Input and output file paths
 input_video_path = 'videos/02.mp4'
@@ -29,7 +29,7 @@ while cap.isOpened():
         break
 
     # Run YOLOv5 inference on the frame
-    results = model.predict(frame, conf=0.5, verbose=False)
+    results = model.predict(frame, conf=0.5, imgsz=1280, augment=True, verbose=False)
 
     # Draw bounding boxes and labels
     for result in results:
