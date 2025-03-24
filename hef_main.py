@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 from picamera2 import Picamera2
-from hailo_platform import (HEF, HailoRT, InferVStreams, VDevice)
+from hailo_platform import (HEF, InferVStreams, VDevice)
+from hailo_platform.pyhailort import HailoRT
 
 # Load YOLOv8 HEF model
 hef_path = "/home/panther/hailo-rpi5-examples/resources/yolov8m_h8l.hef"
