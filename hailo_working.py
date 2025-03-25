@@ -96,7 +96,7 @@ class HailoYOLOInference:
             print("Output:", output)
             print(f"1Output stream {stream_name} shape: {len(output)}")
         
-            print(f"1Output stream {stream_name} dtype: {output.dtype}")
+            print(f"1Output stream {stream_name} dtype: {type(output)}")
 
             output_array = np.array(output)  # Convert to NumPy array
             
