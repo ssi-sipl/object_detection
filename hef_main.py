@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 from picamera2 import Picamera2
-from hailo_platform import (HEF, InferVStreams, VDevice)
+from hailo_platform import (HEF, VDevice, HailoStreamInterface, InferVStreams, ConfigureParams,
+    InputVStreamParams, OutputVStreamParams, InputVStreams, OutputVStreams, FormatType)
 
 # Load HEF model
 hef_path = "/usr/share/hailo-models/yolov8s_h8l.hef"
