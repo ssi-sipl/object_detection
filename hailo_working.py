@@ -45,7 +45,7 @@ class HailoYOLOInference:
             self.network_group, 
             format_type=FormatType.FLOAT32
         )
-        
+         Possibly the maximum number of de
         # Input image dimensions
         self.input_height, self.input_width, self.input_channels = self.input_vstream_info.shape
 
@@ -91,13 +91,11 @@ class HailoYOLOInference:
                 }
 
     def postprocess_results(self, outputs, original_frame):
+        output_array = np.array(outputs['yolov8s/yolov8_nms_postprocess'])
+        print("OUTPUT ARRAY:",output_array)
     # Iterate over output streams and convert lists to NumPy arrays
         for stream_name, output in outputs.items():
-            # print("Output:", output)
-            # print(f"1Output stream {stream_name} shape: {len(output)}")
-        
-            # print(f"1Output stream {stream_name} dtype: {type(output)}")
-
+    
             output_array = np.array(output)  # Convert to NumPy array
             
             # Now you can safely access .shape and .dtype
