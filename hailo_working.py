@@ -51,21 +51,20 @@ class HailoYOLOInference:
 
     def preprocess_frame(self, frame):
         # Resize frame to model input size (640x640)
-        print(f"Original frame shape: {frame.shape}")
-        print(f"Input Width: {self.input_width}, Input Height: {self.input_height}")
+        
         resized_frame = cv2.resize(frame, (self.input_width, self.input_height))
         
         # Convert color space if needed (BGR to RGB)
         preprocessed_frame = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
         
         # Normalize pixel values (0-1)
-        normalized_frame = preprocessed_frame.astype(np.float32) / 255.0
+        # normalized_frame = preprocessed_frame.astype(np.float32) / 255.0
         
         # Ensure the frame matches the expected input shape
-        assert normalized_frame.shape == (self.input_height, self.input_width, self.input_channels), \
-            f"Input shape mismatch. Expected {(self.input_height, self.input_width, self.input_channels)}, got {normalized_frame.shape}"
+        assert resized_frame.shape == (self.input_height, self.input_width, self.input_channels), \
+            f"Input shape mismatch. Expected {(self.input_height, self.input_width, self.input_channels)}, got {resized_frame.shape}"
         
-        return normalized_frame
+        return resized_frame
 
     def run_inference(self, preprocessed_frame):
         # Prepare input data dictionary
