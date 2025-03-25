@@ -27,11 +27,14 @@ class HailoYOLOInference:
         
         # Get input and output stream info
         self.input_vstream_info = self.hef.get_input_vstream_infos()[0]
-        self.output_vstream_info = self.hef.get_output_vstream_infos()[0]
+        self.output_vstream_infos = self.hef.get_output_vstream_infos()
         
-        # Print input stream information for debugging
+        # Print input and output stream information for debugging
         print(f"Input stream shape: {self.input_vstream_info.shape}")
         print(f"Input stream name: {self.input_vstream_info.name}")
+        print(f"Number of output streams: {len(self.output_vstream_infos)}")
+        for i, out_stream in enumerate(self.output_vstream_infos):
+            print(f"Output stream {i} name: {out_stream.name}, shape: {out_stream.shape}")
         
         # Create input and output virtual stream parameters
         self.input_vstreams_params = InputVStreamParams.make(
@@ -47,13 +50,13 @@ class HailoYOLOInference:
         self.input_height, self.input_width, self.input_channels = self.input_vstream_info.shape
 
     def preprocess_frame(self, frame):
-        # Resize frame to model input size
+        # Resize frame to model input size (640x640)
         resized_frame = cv2.resize(frame, (self.input_width, self.input_height))
         
-        # Convert color space if needed (e.g., BGR to RGB)
+        # Convert color space if needed (BGR to RGB)
         preprocessed_frame = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
         
-        # Normalize pixel values (assuming model expects float32 in range 0-1)
+        # Normalize pixel values (0-1)
         normalized_frame = preprocessed_frame.astype(np.float32) / 255.0
         
         # Ensure the frame matches the expected input shape
@@ -80,21 +83,26 @@ class HailoYOLOInference:
                 # Run inference
                 infer_results = infer_pipeline.infer(input_data)
                 
-                # Return output for the first output stream
-                return infer_results[self.output_vstream_info.name]
+                # Return outputs for all output streams
+                return {
+                    out_stream.name: infer_results[out_stream.name] 
+                    for out_stream in self.output_vstream_infos
+                }
 
     def postprocess_results(self, outputs, original_frame):
-        # Implement your specific postprocessing logic here
-        # This depends on the exact output format of your YOLOv8 model
+        # Placeholder for more advanced postprocessing
+        for stream_name, output in outputs.items():
+            print(f"Output stream {stream_name} shape: {output.shape}")
+            print(f"Output stream {stream_name} dtype: {output.dtype}")
         
-        # Example placeholder (replace with actual logic):
-        print(f"Inference output shape: {outputs.shape}")
+        # If you want to draw something on the frame
+        result_frame = original_frame.copy()
         
-        return original_frame
+        return result_frame
 
 def main():
     # Specify the exact path to your HEF file
-    HEF_PATH = "/usr/share/hailo-models/yolov8s_h8l.hef"
+    HEF_PATH = '/usr/share/hailo-models/yolov8s_h8l.hef'
 
     # Setup Picamera2
     picam2 = picamera2.Picamera2()
