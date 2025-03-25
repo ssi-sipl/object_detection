@@ -29,6 +29,10 @@ class HailoYOLOInference:
         self.input_vstream_info = self.hef.get_input_vstream_infos()[0]
         self.output_vstream_info = self.hef.get_output_vstream_infos()[0]
         
+        # Print input stream information for debugging
+        print(f"Input stream shape: {self.input_vstream_info.shape}")
+        print(f"Input stream name: {self.input_vstream_info.name}")
+        
         # Create input and output virtual stream parameters
         self.input_vstreams_params = InputVStreamParams.make(
             self.network_group, 
@@ -40,20 +44,30 @@ class HailoYOLOInference:
         )
         
         # Input image dimensions
-        self.input_height, self.input_width, _ = self.input_vstream_info.shape
+        self.input_height, self.input_width, self.input_channels = self.input_vstream_info.shape
 
     def preprocess_frame(self, frame):
         # Resize frame to model input size
         resized_frame = cv2.resize(frame, (self.input_width, self.input_height))
         
-        # Normalize pixel values (assuming model expects float32)
-        normalized_frame = resized_frame.astype(np.float32) / 255.0
+        # Convert color space if needed (e.g., BGR to RGB)
+        preprocessed_frame = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
+        
+        # Normalize pixel values (assuming model expects float32 in range 0-1)
+        normalized_frame = preprocessed_frame.astype(np.float32) / 255.0
+        
+        # Ensure the frame matches the expected input shape
+        assert normalized_frame.shape == (self.input_height, self.input_width, self.input_channels), \
+            f"Input shape mismatch. Expected {(self.input_height, self.input_width, self.input_channels)}, got {normalized_frame.shape}"
         
         return normalized_frame
 
     def run_inference(self, preprocessed_frame):
         # Prepare input data dictionary
-        input_data = {self.input_vstream_info.name: np.expand_dims(preprocessed_frame, axis=0)}
+        # Ensure input is a 4D tensor with batch dimension
+        input_data = {
+            self.input_vstream_info.name: np.expand_dims(preprocessed_frame, axis=0)
+        }
         
         # Use InferVStreams for inference
         with InferVStreams(
@@ -80,7 +94,7 @@ class HailoYOLOInference:
 
 def main():
     # Specify the exact path to your HEF file
-    HEF_PATH = '/usr/share/hailo-models/yolov8s_h8l.hef'
+    HEF_PATH = "/usr/share/hailo-models/yolov8s_h8l.hef"
 
     # Setup Picamera2
     picam2 = picamera2.Picamera2()
