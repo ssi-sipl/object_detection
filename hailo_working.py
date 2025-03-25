@@ -45,7 +45,7 @@ class HailoYOLOInference:
             self.network_group, 
             format_type=FormatType.FLOAT32
         )
-         Possibly the maximum number of de
+        #  Possibly the maximum number of de
         # Input image dimensions
         self.input_height, self.input_width, self.input_channels = self.input_vstream_info.shape
 
