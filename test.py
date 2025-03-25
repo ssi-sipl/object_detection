@@ -89,19 +89,43 @@ class HailoYOLOInference:
                     for out_stream in self.output_vstream_infos
                 }
 
-    def postprocess_results(self, outputs, original_frame):
-    # Iterate over output streams and convert lists to NumPy arrays
-        for stream_name, output in outputs.items():
-            output_array = np.array(output)  # Convert to NumPy array
-
-            # Now you can safely access .shape and .dtype
-            print(f"Output stream {stream_name} shape: {output_array.shape}")
-            print(f"Output stream {stream_name} dtype: {output_array.dtype}")
-        
-        # If you want to draw something on the frame
+    def postprocess_results(self, outputs, original_frame, confidence_threshold=0.5):
         result_frame = original_frame.copy()
+
+        for stream_name, output in outputs.items():
+            output_array = np.array(output)  # Convert list to NumPy array
+            
+            print(f"Output stream {stream_name} shape: {output_array.shape}")
+            
+            # YOLOv8 NMS postprocess output format: (num_classes, 5, num_boxes)
+            # output_array.shape -> (80, 5, 100) => 80 classes, 5 attributes, 100 predictions
+            num_classes, _, num_boxes = output_array.shape
+
+            for class_idx in range(num_classes):
+                for box_idx in range(num_boxes):
+                    box_info = output_array[class_idx, :, box_idx]
+
+                    # Extract box info
+                    x, y, w, h, confidence = box_info
+                    if confidence < confidence_threshold:
+                        continue  # Skip low confidence predictions
+
+                    # Calculate box coordinates
+                    x1 = int((x - w / 2) * original_frame.shape[1])  # X-min
+                    y1 = int((y - h / 2) * original_frame.shape[0])  # Y-min
+                    x2 = int((x + w / 2) * original_frame.shape[1])  # X-max
+                    y2 = int((y + h / 2) * original_frame.shape[0])  # Y-max
+
+                    # Draw bounding box and label
+                    label = f"Class {class_idx} ({confidence:.2f})"
+                    cv2.rectangle(result_frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                    cv2.putText(
+                        result_frame, label, (x1, y1 - 5), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2
+                    )
         
         return result_frame
+
 
 
 def main():
