@@ -93,10 +93,10 @@ class HailoYOLOInference:
     def postprocess_results(self, outputs, original_frame):
     # Iterate over output streams and convert lists to NumPy arrays
         for stream_name, output in outputs.items():
-            print("Output:", output)
-            print(f"1Output stream {stream_name} shape: {len(output)}")
+            # print("Output:", output)
+            # print(f"1Output stream {stream_name} shape: {len(output)}")
         
-            print(f"1Output stream {stream_name} dtype: {type(output)}")
+            # print(f"1Output stream {stream_name} dtype: {type(output)}")
 
             output_array = np.array(output)  # Convert to NumPy array
             
