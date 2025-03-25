@@ -9,7 +9,7 @@ from hailo_platform import (
 )
 
 class HailoYOLOInference:
-    def __init__(self, hef_path='/path/to/yolov8_h8l.hef'):
+    def __init__(self, hef_path='/usr/share/hailo-models/yolov8s_h8l.hef'):
         # Initialize Hailo device and model
         self.target = VDevice()
         self.hef = HEF(hef_path)
@@ -88,7 +88,7 @@ def main():
     picam2.configure(config)
     
     # Initialize Hailo inference
-    hailo_inference = HailoYOLOInference(hef_path='/path/to/yolov8_h8l.hef')
+    hailo_inference = HailoYOLOInference(hef_path='/usr/share/hailo-models/yolov8s_h8l.hef')
     
     # Start camera
     picam2.start()
