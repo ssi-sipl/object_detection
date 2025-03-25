@@ -86,7 +86,7 @@ def main():
     picam2.configure(config)
     
     # Initialize Hailo inference
-    hailo_inference = HailoYOLOInference(hef_path='/path/to/yolov8_h8l.hef')
+    hailo_inference = HailoYOLOInference(hef_path='/usr/share/hailo-models/yolov8s_h8l.hef')
     
     # Start camera
     picam2.start()
