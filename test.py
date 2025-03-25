@@ -91,7 +91,8 @@ class HailoYOLOInference:
 
     def postprocess_results(self, outputs, original_frame, confidence_threshold=0.5):
         result_frame = original_frame.copy()
-
+        print("RESULT FRAME SHAPE: ", result_frame.shape)
+        print("OUTPUTS: ", result_frame)
         for stream_name, output in outputs.items():
             output_array = np.array(output)  # Convert list to NumPy array
             
