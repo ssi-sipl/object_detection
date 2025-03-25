@@ -5,7 +5,7 @@ import libcamera
 from hailo_platform import (
     HEF, VDevice, HailoStreamInterface, InferVStreams, 
     ConfigureParams, InputVStreamParams, OutputVStreamParams, 
-    InputVStreams, OutputVStreams, FormatType, HailoFormat
+    InputVStreams, OutputVStreams, FormatType
 )
 
 class HailoYOLOInference:
