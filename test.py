@@ -3,40 +3,41 @@ import numpy as np
 import picamera2
 import libcamera
 from hailo_platform import (
-    HEF, VDevice, HailoStreamInterface, InferVStreams, 
+    HEF, VDevice, HailoStreamInterface, InferVStreams,
     ConfigureParams, InputVStreamParams, OutputVStreamParams, 
     InputVStreams, OutputVStreams, FormatType
 )
 
 class HailoYOLOInference:
-    def __init__(self, hef_path='/usr/share/hailo-models/yolov8s_h8l.hef'):
+    def __init__(self, hef_path):
         # Initialize Hailo device and model
         self.target = VDevice()
         self.hef = HEF(hef_path)
         
         # Configure network groups
-        configure_params = ConfigureParams.create_from_hef(
+        self.configure_params = ConfigureParams.create_from_hef(
             hef=self.hef, 
             interface=HailoStreamInterface.PCIe
         )
-        network_groups = self.target.configure(self.hef, configure_params)
-        self.network_group = network_groups[0]
+        self.network_groups = self.target.configure(self.hef, self.configure_params)
+        self.network_group = self.network_groups[0]
+        
+        # Create network group params
+        self.network_group_params = self.network_group.create_params()
+        
+        # Get input and output stream info
+        self.input_vstream_info = self.hef.get_input_vstream_infos()[0]
+        self.output_vstream_info = self.hef.get_output_vstream_infos()[0]
         
         # Create input and output virtual stream parameters
         self.input_vstreams_params = InputVStreamParams.make(
             self.network_group, 
             format_type=FormatType.FLOAT32
         )
-        
-        # Use FLOAT32 for output as well
         self.output_vstreams_params = OutputVStreamParams.make(
             self.network_group, 
             format_type=FormatType.FLOAT32
         )
-        
-        # Get input and output stream info
-        self.input_vstream_info = self.hef.get_input_vstream_infos()[0]
-        self.output_vstream_info = self.hef.get_output_vstream_infos()[0]
         
         # Input image dimensions
         self.input_height, self.input_width, _ = self.input_vstream_info.shape
@@ -48,29 +49,29 @@ class HailoYOLOInference:
         # Normalize pixel values (assuming model expects float32)
         normalized_frame = resized_frame.astype(np.float32) / 255.0
         
-        # Ensure correct channel order and shape
-        preprocessed_frame = np.expand_dims(normalized_frame, axis=0)
-        
-        return preprocessed_frame
+        return normalized_frame
 
     def run_inference(self, preprocessed_frame):
-        # Create input and output virtual streams
-        with InputVStreams(self.network_group, self.input_vstreams_params) as input_vstreams, \
-             OutputVStreams(self.network_group, self.output_vstreams_params) as output_vstreams:
-            
-            # Run inference
-            input_vstreams[0].send(preprocessed_frame)
-            outputs = output_vstreams[0].recv()
-            
-            return outputs
+        # Prepare input data dictionary
+        input_data = {self.input_vstream_info.name: np.expand_dims(preprocessed_frame, axis=0)}
+        
+        # Use InferVStreams for inference
+        with InferVStreams(
+            self.network_group, 
+            self.input_vstreams_params, 
+            self.output_vstreams_params
+        ) as infer_pipeline:
+            # Activate network group
+            with self.network_group.activate(self.network_group_params):
+                # Run inference
+                infer_results = infer_pipeline.infer(input_data)
+                
+                # Return output for the first output stream
+                return infer_results[self.output_vstream_info.name]
 
     def postprocess_results(self, outputs, original_frame):
         # Implement your specific postprocessing logic here
         # This depends on the exact output format of your YOLOv8 model
-        # Typical steps include:
-        # 1. Decode bounding boxes
-        # 2. Apply confidence thresholds
-        # 3. Draw bounding boxes on the frame
         
         # Example placeholder (replace with actual logic):
         print(f"Inference output shape: {outputs.shape}")
@@ -78,6 +79,9 @@ class HailoYOLOInference:
         return original_frame
 
 def main():
+    # Specify the exact path to your HEF file
+    HEF_PATH = '/usr/share/hailo-models/yolov8s_h8l.hef'
+
     # Setup Picamera2
     picam2 = picamera2.Picamera2()
     config = picam2.create_preview_configuration(
@@ -88,7 +92,7 @@ def main():
     picam2.configure(config)
     
     # Initialize Hailo inference
-    hailo_inference = HailoYOLOInference(hef_path='/usr/share/hailo-models/yolov8s_h8l.hef')
+    hailo_inference = HailoYOLOInference(hef_path=HEF_PATH)
     
     # Start camera
     picam2.start()
