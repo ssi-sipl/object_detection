@@ -61,10 +61,10 @@ class HailoYOLOInference:
         # normalized_frame = preprocessed_frame.astype(np.float32) / 255.0
         
         # Ensure the frame matches the expected input shape
-        assert resized_frame.shape == (self.input_height, self.input_width, self.input_channels), \
-            f"Input shape mismatch. Expected {(self.input_height, self.input_width, self.input_channels)}, got {resized_frame.shape}"
+        assert preprocessed_frame.shape == (self.input_height, self.input_width, self.input_channels), \
+            f"Input shape mismatch. Expected {(self.input_height, self.input_width, self.input_channels)}, got {preprocessed_frame.shape}"
         
-        return resized_frame
+        return preprocessed_frame
 
     def run_inference(self, preprocessed_frame):
         # Prepare input data dictionary
