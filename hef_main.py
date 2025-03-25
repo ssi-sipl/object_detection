@@ -1,58 +1,63 @@
 import cv2
 import numpy as np
 from picamera2 import Picamera2
-from hailo_platform import (HEF, VDevice, HailoStreamInterface, InferVStreams, ConfigureParams,
-    InputVStreamParams, OutputVStreamParams, InputVStreams, OutputVStreams, FormatType)
+from hailo_platform import (HEF, InferVStreams, VDevice)
 
-
-# Load YOLOv8 HEF model
+# Load HEF model
 hef_path = "/usr/share/hailo-models/yolov8s_h8l.hef"
 hef = HEF(hef_path)
 
-# Initialize Hailo device
-device = VDevice()
-network_group = device.create_network_group(hef)
-vstreams = InferVStreams(network_group)
+# Open VDevice and configure network
+with VDevice() as device:
+    network_groups = device.configure(hef)
+    network_group = network_groups[0]  # Get the first network group
+    network_group.activate()  # Activate network group
 
-# Initialize PiCamera2
-picam2 = Picamera2()
-picam2.preview_configuration.main.size = (640, 480)
-picam2.preview_configuration.main.format = "RGB888"
-picam2.configure("preview")
-picam2.start()
+    # Get input and output vstream info
+    input_vstream_info = network_group.get_input_vstream_infos()[0]
+    output_vstream_info = network_group.get_output_vstream_infos()[0]
 
-def preprocess(frame):
-    """Preprocess the frame for inference."""
-    frame_resized = cv2.resize(frame, (640, 640))
-    frame_rgb = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)
-    return np.expand_dims(frame_rgb, axis=0).astype(np.float32)
+    # Create input and output vstreams
+    input_vstreams = InferVStreams(network_group, input_vstream_info)
+    output_vstreams = InferVStreams(network_group, output_vstream_info)
 
-def postprocess(results, frame):
-    """Post-process and display results."""
-    for result in results[0]:
-        x1, y1, x2, y2, conf, class_id = result[:6]
-        if conf > 0.5:
-            label = f"Class {int(class_id)}: {conf:.2f}"
-            cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
-            cv2.putText(frame, label, (int(x1), int(y1) - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-    return frame
+    # Initialize Picamera2
+    picam2 = Picamera2()
+    config = picam2.create_preview_configuration(main={"size": (640, 480), "format": "RGB888"})
+    picam2.configure(config)
+    picam2.start()
 
-# Start video pipeline
-while True:
-    frame = picam2.capture_array()
-    preprocessed_frame = preprocess(frame)
+    # Start Video Capture
+    while True:
+        # Capture frame from Picamera2
+        frame = picam2.capture_array()
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    # Run inference on Hailo AI Kit
-    results = vstreams.infer(preprocessed_frame)
+        # Preprocess frame for YOLOv8 (resize to model input size)
+        resized_frame = cv2.resize(frame_rgb, (640, 640))  # YOLOv8 input size
+        input_frame = np.expand_dims(resized_frame, axis=0)
 
-    # Post-process results
-    output_frame = postprocess(results, frame)
+        # Run inference
+        input_vstreams.write(input_frame)
+        results = output_vstreams.read()
 
-    # Show output
-    cv2.imshow("Hailo YOLOv8 Inference", output_frame)
+        # Post-process results
+        detections = results[0].as_numpy().reshape((-1, 6))  # [x, y, w, h, conf, class]
+        for detection in detections:
+            x, y, w, h, conf, class_id = detection
+            if conf > 0.5:
+                x1, y1, x2, y2 = int(x - w / 2), int(y - h / 2), int(x + w / 2), int(y + h / 2)
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                label = f"Class: {int(class_id)}, Conf: {conf:.2f}"
+                cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
+        # Show the frame with bounding boxes
+        cv2.imshow("YOLOv8 + Hailo on RPi5", frame)
 
-# Release resources
-cv2.destroyAllWindows()
+        # Exit with 'q'
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # Clean up
+    cv2.destroyAllWindows()
+    network_group.deactivate()
