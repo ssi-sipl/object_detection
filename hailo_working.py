@@ -51,6 +51,8 @@ class HailoYOLOInference:
 
     def preprocess_frame(self, frame):
         # Resize frame to model input size (640x640)
+        print(f"Original frame shape: {frame.shape}")
+        print(f"Input Width: {self.input_width}, Input Height: {self.input_height}")
         resized_frame = cv2.resize(frame, (self.input_width, self.input_height))
         
         # Convert color space if needed (BGR to RGB)
