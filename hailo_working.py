@@ -57,11 +57,8 @@ class HailoYOLOInference:
         # Convert color space if needed (BGR to RGB)
         preprocessed_frame = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
 
-        preprocessed_frame = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
-        normalized_frame = cv2.convertScaleAbs(preprocessed_frame, alpha=1/255.0)
-        
         # Normalize pixel values (0-1)
-        # normalized_frame = preprocessed_frame.astype(np.float32) / 255.0
+        normalized_frame = preprocessed_frame.astype(np.float32) / 255.0
         
         # Ensure the frame matches the expected input shape
         assert normalized_frame.shape == (self.input_height, self.input_width, self.input_channels), \
