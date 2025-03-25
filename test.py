@@ -5,11 +5,11 @@ import libcamera
 from hailo_platform import (
     HEF, VDevice, HailoStreamInterface, InferVStreams, 
     ConfigureParams, InputVStreamParams, OutputVStreamParams, 
-    InputVStreams, OutputVStreams, FormatType
+    InputVStreams, OutputVStreams, FormatType, HailoFormat
 )
 
 class HailoYOLOInference:
-    def __init__(self, hef_path='/usr/share/hailo-models/yolov8s_h8l.hef'):
+    def __init__(self, hef_path='/path/to/yolov8_h8l.hef'):
         # Initialize Hailo device and model
         self.target = VDevice()
         self.hef = HEF(hef_path)
@@ -27,9 +27,11 @@ class HailoYOLOInference:
             self.network_group, 
             format_type=FormatType.FLOAT32
         )
+        
+        # Use FLOAT32 for output as well
         self.output_vstreams_params = OutputVStreamParams.make(
             self.network_group, 
-            format_type=FormatType.UINT8
+            format_type=FormatType.FLOAT32
         )
         
         # Get input and output stream info
@@ -86,7 +88,7 @@ def main():
     picam2.configure(config)
     
     # Initialize Hailo inference
-    hailo_inference = HailoYOLOInference(hef_path='/usr/share/hailo-models/yolov8s_h8l.hef')
+    hailo_inference = HailoYOLOInference(hef_path='/path/to/yolov8_h8l.hef')
     
     # Start camera
     picam2.start()
